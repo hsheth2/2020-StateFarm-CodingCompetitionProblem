@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="10" failures="2" name="sf.codingcompetition2020.CodingCompCsvUtilTest" time="0.098" errors="2" skipped="0">
+<testsuite tests="10" failures="2" name="sf.codingcompetition2020.CodingCompCsvUtilTest" time="0.104" errors="2" skipped="0">
   <properties>
     <property name="idea.version" value="2020.2.3"/>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
@@ -56,7 +56,7 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="sun.cpu.endian" value="little"/>
   </properties>
-  <testcase classname="sf.codingcompetition2020.CodingCompCsvUtilTest" name="getCustomersRetainedForYearsByPlcyCostAsc2" time="0.005">
+  <testcase classname="sf.codingcompetition2020.CodingCompCsvUtilTest" name="getCustomersRetainedForYearsByPlcyCostAsc2" time="0.006">
     <error message="Cannot invoke &quot;java.util.List.size()&quot; because the return value of &quot;sf.codingcompetition2020.CodingCompCsvUtil.getUndisclosedDrivers(String, int, int)&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;java.util.List.size()&quot; because the return value of &quot;sf.codingcompetition2020.CodingCompCsvUtil.getUndisclosedDrivers(String, int, int)&quot; is null
 	at sf.codingcompetition2020.CodingCompCsvUtilTest.getCustomersRetainedForYearsByPlcyCostAsc2(CodingCompCsvUtilTest.java:99)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
@@ -90,9 +90,9 @@
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
 </error>
   </testcase>
-  <testcase classname="sf.codingcompetition2020.CodingCompCsvUtilTest" name="getLeadsForInsurance" time="0.024"/>
+  <testcase classname="sf.codingcompetition2020.CodingCompCsvUtilTest" name="getLeadsForInsurance" time="0.027"/>
   <testcase classname="sf.codingcompetition2020.CodingCompCsvUtilTest" name="getVendorsWithGivenRatingThatAreInScope" time="0.005">
-    <failure message="expected:&lt;11&gt; but was:&lt;8&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;11&gt; but was:&lt;8&gt;
+    <failure message="expected:&lt;11&gt; but was:&lt;3&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;11&gt; but was:&lt;3&gt;
 	at org.junit.Assert.fail(Assert.java:88)
 	at org.junit.Assert.failNotEquals(Assert.java:834)
 	at org.junit.Assert.assertEquals(Assert.java:645)
@@ -129,7 +129,7 @@
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
 </failure>
   </testcase>
-  <testcase classname="sf.codingcompetition2020.CodingCompCsvUtilTest" name="countCustomersFromCitythatUseAgent" time="0.022"/>
+  <testcase classname="sf.codingcompetition2020.CodingCompCsvUtilTest" name="countCustomersFromCitythatUseAgent" time="0.025"/>
   <testcase classname="sf.codingcompetition2020.CodingCompCsvUtilTest" name="test1" time="0.013"/>
   <testcase classname="sf.codingcompetition2020.CodingCompCsvUtilTest" name="getAgentIdGivenRank" time="0.001">
     <failure message="expected:&lt;3&gt; but was:&lt;0&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;3&gt; but was:&lt;0&gt;
@@ -205,5 +205,5 @@
 </error>
   </testcase>
   <testcase classname="sf.codingcompetition2020.CodingCompCsvUtilTest" name="getAgentsInAreaThatSpeakLanguage" time="0.008"/>
-  <testcase classname="sf.codingcompetition2020.CodingCompCsvUtilTest" name="getCustomersRetainedForYearsByPlcyCostAsc" time="0.01"/>
+  <testcase classname="sf.codingcompetition2020.CodingCompCsvUtilTest" name="getCustomersRetainedForYearsByPlcyCostAsc" time="0.009"/>
 </testsuite>

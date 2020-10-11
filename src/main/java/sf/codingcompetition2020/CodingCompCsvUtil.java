@@ -202,9 +202,10 @@ public class CodingCompCsvUtil {
 	 */
 	public List<Vendor> getVendorsWithGivenRatingThatAreInScope(String filePath, String area, boolean inScope, int vendorRating) {
 		return readCsvFile(filePath, Vendor.class).stream().filter(vendor -> {
-			return vendorRating == vendor.getVendorRating();
-		}).filter(vendor -> {
-			return !inScope || vendor.isInScope();
+			// TODO debug
+			return vendorRating == vendor.getVendorRating() &&
+					area.equals(vendor.getArea()) &&
+					(!inScope || vendor.isInScope());
 		}).collect(Collectors.toList());
 	}
 
@@ -219,8 +220,11 @@ public class CodingCompCsvUtil {
 	 * @return -- List of customers filtered by age, number of vehicles insured and the number of dependents.
 	 */
 	public List<Customer> getUndisclosedDrivers(String filePath, int vehiclesInsured, int dependents) {
-		// TODO this
-		return null;
+		return readCsvFile(filePath, Customer.class).stream().filter(customer -> {
+			return 40 <= customer.getAge() && customer.getAge() <= 50
+					&& customer.getVehiclesInsured() > vehiclesInsured
+					&& customer.getDependents().size() <= dependents;
+		}).collect(Collectors.toList());
 	}
 
 
