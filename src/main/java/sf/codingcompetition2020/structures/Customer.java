@@ -16,35 +16,14 @@ public class Customer {
 	private int agentId;
 	private short agentRating;
 	private String primaryLanguage;
-	private List<Dependent> dependents;
+	//private List<Dependent> dependents;
+	private String dependents;
 	private boolean homePolicy;
 	private boolean autoPolicy;
 	private boolean rentersPolicy;
 	private String totalMonthlyPremium;
 	private short yearsOfService;
 	private Integer vehiclesInsured;
-
-	public Customer(String[] tokens) {
-		if (tokens.length != 15) {
-			throw new IllegalArgumentException("Customer: tokens not the appropriate length");
-		}
-
-		customerId = Integer.parseInt(tokens[0]);
-		firstName = tokens[1];
-		lastName = tokens[2];
-		age = Integer.parseInt(tokens[3]);
-		area = tokens[4];
-		agentId = Integer.parseInt(tokens[5]);
-		agentRating = Short.parseShort(tokens[6]);
-		primaryLanguage = tokens[7];
-		// TODO dependents
-		homePolicy = tokens[9].equals("true");
-		autoPolicy = tokens[10].equals("true");
-		rentersPolicy = tokens[11].equals("true");
-		totalMonthlyPremium = tokens[12];
-		yearsOfService = Short.parseShort(tokens[13]);
-		vehiclesInsured = Integer.parseInt(tokens[14]);
-	}
 
 	public int getCustomerId() {
 		return customerId;
@@ -78,7 +57,7 @@ public class Customer {
 		return primaryLanguage;
 	}
 
-	public List<Dependent> getDependents() {
+	public String getDependents() {
 		return dependents;
 	}
 
@@ -99,7 +78,6 @@ public class Customer {
 	}
 
 	public int getTotalMonthlyPremiumAsInt() {
-		// TODO: cache this value?
 		return Integer.parseInt(totalMonthlyPremium.substring(1));
 	}
 

@@ -8,18 +8,6 @@ public class Agent {
 	private String firstName;
 	private String lastName;
 
-	public Agent(String[] tokens) {
-		if (tokens.length != 5) {
-			throw new IllegalArgumentException("Agent: tokens not the appropriate length");
-		}
-
-		agentId = Integer.parseInt(tokens[0]);
-		area = tokens[1];
-		language = tokens[2];
-		firstName = tokens[3];
-		lastName = tokens[4];
-	}
-
 	public int getAgentId() {
 		return agentId;
 	}

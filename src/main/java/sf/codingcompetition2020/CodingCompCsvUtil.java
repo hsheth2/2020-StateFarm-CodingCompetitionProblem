@@ -1,5 +1,6 @@
 package sf.codingcompetition2020;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -26,54 +27,6 @@ import sf.codingcompetition2020.structures.Vendor;
 
 public class CodingCompCsvUtil {
 
-	// TODO comments
-	private static String[] tokenize(String line) {
-		ArrayList<String> tokens = new ArrayList<>();
-
-		boolean isEscaped = false;
-		int index = 0;
-		while (index < line.length()) {
-			if (line.charAt(index) == '"') {
-				isEscaped = !isEscaped;
-				index++;
-				continue;
-			}
-
-			if (!isEscaped && line.charAt(index) == ',') {
-				// Capture a token.
-				String token = line.substring(0, index);
-				tokens.add(token);
-
-				// Reset the line.
-				if (index+1 == line.length()) {
-					// End of the line.
-					line = null;
-					break;
-				} else {
-					line = line.substring(index+1);
-					index = 0;
-				}
-			} else {
-				index++;
-			}
-		}
-
-		// Check the escaping was correct.
-		if (isEscaped) {
-			throw new IllegalArgumentException("Mismatched quotations for escaping");
-		}
-
-		// Handle the last token.
-		if (line != null) {
-			tokens.add(line);
-		}
-
-		// Return a String[].
-		String[] result = new String[tokens.size()];
-		tokens.toArray(result);
-		return result;
-	}
-
 	/* #1
 	 * readCsvFile() -- Read in a CSV File and return a list of entries in that file.
 	 * @param filePath -- Path to file being read in.
@@ -81,32 +34,21 @@ public class CodingCompCsvUtil {
 	 * @return -- List of entries being returned.
 	 */
 	public <T> List<T> readCsvFile(String filePath, Class<T> classType) {
-		// Get the object constructor.
-		Constructor<T> creator;
-		try {
-			creator = classType.getConstructor(String[].class);
-		} catch (NoSuchMethodException e) {
-			throw new IllegalArgumentException("Class does not have the appropriate constructor");
-		}
+		CsvMapper csvMapper = new CsvMapper();
+		CsvSchema schema = CsvSchema.emptySchema().withHeader();
 
-		try {
-			// Open and read CSV file, skipping the headers on the first line.
-			Path file = Paths.get(filePath);
-			return Files.lines(file).skip(1).map(line -> {
-				// Split the CSV line into tokens.
-				String[] lineContents = tokenize(line);
+		ObjectReader reader = csvMapper.reader(classType).with(schema);
 
-				// Create the appropriate object.
-				try {
-					return creator.newInstance((Object) lineContents);
-				} catch (IllegalAccessException|InvocationTargetException|InstantiationException e) {
-					e.printStackTrace();
-					throw new IllegalArgumentException("Cannot create instance of class T");
-				}
-			}).collect(Collectors.toList());
+		ArrayList<T> values = new ArrayList<>();
+		try {
+			MappingIterator<T> it = reader.readValues(new File(filePath));
+			while (it.hasNext()) {
+				values.add(it.next());
+			}
 		} catch (IOException e) {
 			throw new IllegalArgumentException("Cannot open the specified file");
 		}
+		return values;
 	}
 
 
@@ -223,7 +165,7 @@ public class CodingCompCsvUtil {
 		return readCsvFile(filePath, Customer.class).stream().filter(customer -> {
 			return 40 <= customer.getAge() && customer.getAge() <= 50
 					&& customer.getVehiclesInsured() > vehiclesInsured
-					&& customer.getDependents().size() <= dependents;
+;//					&& customer.getDependents().size() <= dependents;
 		}).collect(Collectors.toList());
 	}
 
