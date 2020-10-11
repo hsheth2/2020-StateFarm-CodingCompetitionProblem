@@ -3,8 +3,12 @@ import "./App.css";
 import axios from "axios";
 import { AgGridColumn, AgGridReact } from "ag-grid-react";
 
-import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+import 'ag-grid-enterprise';
+import "@ag-grid-enterprise/all-modules/dist/styles/ag-grid.css";
+import "@ag-grid-enterprise/all-modules/dist/styles/ag-theme-alpine.css";
+
+import { ModuleRegistry, AllModules } from '@ag-grid-enterprise/all-modules';
+ModuleRegistry.registerModules(AllModules);
 
 const csv_parse = require("csv-parse/lib/sync");
 
@@ -32,7 +36,7 @@ function DataViewer({ file }) {
 
   return (
     <div className="ag-theme-alpine" style={{ height: 500, width: 900 }}>
-      <AgGridReact rowData={data}>
+      <AgGridReact rowData={data} enableCharts={true} enableRangeSelection={true}>
         {columns.map(col => (
           <AgGridColumn key={col} field={col} sortable={true} filter={true}></AgGridColumn>
         ))}
