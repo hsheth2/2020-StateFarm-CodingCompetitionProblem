@@ -165,7 +165,7 @@ public class CodingCompCsvUtil {
 		return readCsvFile(filePath, Customer.class).stream().filter(customer -> {
 			return 40 <= customer.getAge() && customer.getAge() <= 50
 					&& customer.getVehiclesInsured() > vehiclesInsured
-					&& customer.getDependentsList().size() <= dependents;
+					&& customer.getDependentsCount() <= dependents;
 		}).collect(Collectors.toList());
 	}
 
@@ -205,8 +205,16 @@ public class CodingCompCsvUtil {
 	 * @return -- List of customers who’ve filed a claim within the last <numberOfMonths>.
 	 */
 	public List<Customer> getCustomersWithClaims(Map<String,String> csvFilePaths, short monthsOpen) {
-		// TODO this
-		return null;
+		List<Claim> claims = readCsvFile(csvFilePaths.get("claimList"), Claim.class);
+
+		return readCsvFile(csvFilePaths.get("customerList"), Customer.class).stream().filter(customer -> {
+			// Check if any claims filed with the last X months.
+			return claims.stream().filter(claim -> {
+				return claim.getCustomerId() == customer.getCustomerId();
+			}).anyMatch(claim -> {
+				return claim.getMonthsOpen() <= monthsOpen;
+			});
+		}).collect(Collectors.toList());
 	}
 
 }

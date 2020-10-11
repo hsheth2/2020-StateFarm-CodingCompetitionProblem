@@ -60,8 +60,9 @@ public class Customer {
 		return dependents;
 	}
 
-	public List<Dependent> getDependentsList() {
-		return null;
+	public int getDependentsCount() {
+		// Guess dependents count based on number of commas.
+		return dependents.split(",").length / 2;
 	}
 
 	public boolean isHomePolicy() {
