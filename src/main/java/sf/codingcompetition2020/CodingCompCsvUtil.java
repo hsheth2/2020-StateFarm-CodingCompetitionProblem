@@ -139,15 +139,18 @@ public class CodingCompCsvUtil {
 	 * @param filePath -- Path to file being read in.
 	 * @param area -- Area of the vendor.
 	 * @param inScope -- Whether or not the vendor is in scope of the insurance.
-	 * @param vendorRating -- The rating of the vendor.
+	 * @param vendorRating -- The minimum rating of the vendor.
 	 * @return -- List of vendors within a given area, filtered by scope and vendor rating.
 	 */
 	public List<Vendor> getVendorsWithGivenRatingThatAreInScope(String filePath, String area, boolean inScope, int vendorRating) {
 		return readCsvFile(filePath, Vendor.class).stream().filter(vendor -> {
-			// TODO debug
-			return vendorRating == vendor.getVendorRating() &&
-					area.equals(vendor.getArea()) &&
-					(!inScope || vendor.isInScope());
+			return area.equals(vendor.getArea());
+		}).filter(vendor -> {
+			return vendorRating <= vendor.getVendorRating();
+		}).filter(vendor -> {
+			if (!inScope)
+				return true;
+			return vendor.isInScope();
 		}).collect(Collectors.toList());
 	}
 
