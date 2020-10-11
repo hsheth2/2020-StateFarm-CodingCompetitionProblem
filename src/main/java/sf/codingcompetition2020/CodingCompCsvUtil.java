@@ -7,10 +7,7 @@ import java.lang.reflect.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -170,12 +167,13 @@ public class CodingCompCsvUtil {
 	/* #5
 	 * getCustomersRetainedForYearsByPlcyCostAsc() -- Return a list of customers retained for a given number of years, in ascending order of their policy cost.
 	 * @param filePath -- Path to file being read in.
-	 * @param yearsOfServeice -- Number of years the person has been a customer.
+	 * @param yearsOfService -- Number of years the person has been a customer.
 	 * @return -- List of customers retained for a given number of years, in ascending order of policy cost.
 	 */
 	public List<Customer> getCustomersRetainedForYearsByPlcyCostAsc(String customerFilePath, short yearsOfService) {
-		// TODO this
-		return null;
+		return readCsvFile(customerFilePath, Customer.class).stream().filter(customer -> {
+			return customer.getYearsOfService() == yearsOfService;
+		}).sorted(Comparator.comparingInt(Customer::getTotalMonthlyPremiumAsInt)).collect(Collectors.toList());
 	}
 
 
@@ -186,8 +184,9 @@ public class CodingCompCsvUtil {
 	 * @return -- List of customers who’ve made an inquiry for a policy but have not signed up.
 	 */
 	public List<Customer> getLeadsForInsurance(String filePath) {
-		// TODO this
-		return null;
+		return readCsvFile(filePath, Customer.class).stream().filter(customer -> {
+			return customer.getTotalMonthlyPremiumAsInt() == 0;
+		}).collect(Collectors.toList());
 	}
 
 
@@ -202,8 +201,11 @@ public class CodingCompCsvUtil {
 	 * @return -- List of vendors within a given area, filtered by scope and vendor rating.
 	 */
 	public List<Vendor> getVendorsWithGivenRatingThatAreInScope(String filePath, String area, boolean inScope, int vendorRating) {
-		// TODO this
-		return null;
+		return readCsvFile(filePath, Vendor.class).stream().filter(vendor -> {
+			return vendorRating == vendor.getVendorRating();
+		}).filter(vendor -> {
+			return !inScope || vendor.isInScope();
+		}).collect(Collectors.toList());
 	}
 
 

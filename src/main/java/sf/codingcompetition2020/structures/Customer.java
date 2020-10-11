@@ -98,6 +98,11 @@ public class Customer {
 		return totalMonthlyPremium;
 	}
 
+	public int getTotalMonthlyPremiumAsInt() {
+		// TODO: cache this value?
+		return Integer.parseInt(totalMonthlyPremium.substring(1));
+	}
+
 	public short getYearsOfService() {
 		return yearsOfService;
 	}
