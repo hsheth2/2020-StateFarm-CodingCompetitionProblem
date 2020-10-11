@@ -165,7 +165,7 @@ public class CodingCompCsvUtil {
 		return readCsvFile(filePath, Customer.class).stream().filter(customer -> {
 			return 40 <= customer.getAge() && customer.getAge() <= 50
 					&& customer.getVehiclesInsured() > vehiclesInsured
-;//					&& customer.getDependents().size() <= dependents;
+					&& customer.getDependentsList().size() <= dependents;
 		}).collect(Collectors.toList());
 	}
 

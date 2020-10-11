@@ -16,7 +16,6 @@ public class Customer {
 	private int agentId;
 	private short agentRating;
 	private String primaryLanguage;
-	//private List<Dependent> dependents;
 	private String dependents;
 	private boolean homePolicy;
 	private boolean autoPolicy;
@@ -59,6 +58,10 @@ public class Customer {
 
 	public String getDependents() {
 		return dependents;
+	}
+
+	public List<Dependent> getDependentsList() {
+		return null;
 	}
 
 	public boolean isHomePolicy() {
