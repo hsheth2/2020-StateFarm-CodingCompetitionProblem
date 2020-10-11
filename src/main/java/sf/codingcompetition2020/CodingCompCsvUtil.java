@@ -1,29 +1,19 @@
 package sf.codingcompetition2020;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.lang.reflect.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-
 import sf.codingcompetition2020.structures.Agent;
 import sf.codingcompetition2020.structures.Claim;
 import sf.codingcompetition2020.structures.Customer;
 import sf.codingcompetition2020.structures.Vendor;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 public class CodingCompCsvUtil {
 
@@ -89,7 +79,7 @@ public class CodingCompCsvUtil {
 	 * @param agentLastName -- Last name of agent.
 	 * @return -- The number of customers that use a certain agent in a given area.
 	 */
-	public short countCustomersFromAreaThatUseAgent(Map<String,String> csvFilePaths, String customerArea, String agentFirstName, String agentLastName) {
+	public short countCustomersFromAreaThatUseAgent(Map<String, String> csvFilePaths, String customerArea, String agentFirstName, String agentLastName) {
 		// First, we find the correct agent.
 		List<Agent> candidateAgents = readCsvFile(csvFilePaths.get("agentList"), Agent.class).stream().filter(agent -> {
 			return agentFirstName.equals(agent.getFirstName()) && agentLastName.equals(agent.getLastName());
@@ -207,7 +197,7 @@ public class CodingCompCsvUtil {
 	 * @param monthsOpen -- Number of months a policy has been open.
 	 * @return -- List of customers who’ve filed a claim within the last <numberOfMonths>.
 	 */
-	public List<Customer> getCustomersWithClaims(Map<String,String> csvFilePaths, short monthsOpen) {
+	public List<Customer> getCustomersWithClaims(Map<String, String> csvFilePaths, short monthsOpen) {
 		List<Claim> claims = readCsvFile(csvFilePaths.get("claimList"), Claim.class);
 
 		return readCsvFile(csvFilePaths.get("customerList"), Customer.class).stream().filter(customer -> {
