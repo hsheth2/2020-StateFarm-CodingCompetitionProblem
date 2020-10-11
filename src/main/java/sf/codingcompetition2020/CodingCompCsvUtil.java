@@ -179,8 +179,22 @@ public class CodingCompCsvUtil {
 	 * @return -- Agent ID of agent with the given rank.
 	 */
 	public int getAgentIdGivenRank(String filePath, int agentRank) {
-		// TODO this
-		return 0;
+		List<Customer> customers = readCsvFile(filePath, Customer.class);
+
+		Map<Integer, Double> agentRatings = new HashMap<>();
+		customers.stream().map(Customer::getAgentId).distinct().forEach(agentId -> {
+			// Compute average ratings for each agent.
+			Double rating = customers.stream().filter(customer -> customer.getAgentId() == agentId)
+					.collect(Collectors.averagingDouble(Customer::getAgentRating));
+			// Negate to reverse order when sorting.
+			agentRatings.put(agentId, -rating);
+		});
+
+		// Sort by ratings, and then get the agent at agentRank.
+		List<Entry<Integer, Double>> rankings = agentRatings.entrySet().stream()
+				.sorted(Entry.comparingByValue())
+				.collect(Collectors.toList());
+		return rankings.get(agentRank - 1).getKey();
 	}
 
 
