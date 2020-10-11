@@ -29,6 +29,7 @@ import sf.codingcompetition2020.structures.Vendor;
 
 public class CodingCompCsvUtil {
 
+	// TODO comments
 	private static String[] tokenize(String line) {
 		ArrayList<String> tokens = new ArrayList<>();
 
@@ -36,9 +37,9 @@ public class CodingCompCsvUtil {
 		int index = 0;
 		while (index < line.length()) {
 			if (line.charAt(index) == '"') {
-			    isEscaped = !isEscaped;
-			    index++;
-			    continue;
+				isEscaped = !isEscaped;
+				index++;
+				continue;
 			}
 
 			if (!isEscaped && line.charAt(index) == ',') {
@@ -47,8 +48,8 @@ public class CodingCompCsvUtil {
 				tokens.add(token);
 
 				// Reset the line.
-                if (index+1 == line.length()) {
-                	// End of the line.
+				if (index+1 == line.length()) {
+					// End of the line.
 					line = null;
 					break;
 				} else {
@@ -66,17 +67,17 @@ public class CodingCompCsvUtil {
 		}
 
 		// Handle the last token.
-        if (line != null) {
-            tokens.add(line);
+		if (line != null) {
+			tokens.add(line);
 		}
 
-        // Return a String[].
-        String[] result = new String[tokens.size()];
-        tokens.toArray(result);
-        return result;
+		// Return a String[].
+		String[] result = new String[tokens.size()];
+		tokens.toArray(result);
+		return result;
 	}
-	
-	/* #1 
+
+	/* #1
 	 * readCsvFile() -- Read in a CSV File and return a list of entries in that file.
 	 * @param filePath -- Path to file being read in.
 	 * @param classType -- Class of entries being read in. Must have a constructor that accepts String[].
@@ -111,19 +112,21 @@ public class CodingCompCsvUtil {
 		}
 	}
 
-	
+
 	/* #2
 	 * getAgentCountInArea() -- Return the number of agents in a given area.
 	 * @param filePath -- Path to file being read in.
 	 * @param area -- The area from which the agents should be counted.
 	 * @return -- The number of agents in a given area
 	 */
-	public int getAgentCountInArea(String filePath,String area) {
-		// TODO this
-		return 0;
+	public int getAgentCountInArea(String filePath, String area) {
+		return (int) readCsvFile(filePath, Agent.class).stream().filter(agent -> {
+			// Only count agents with the correct area.
+			return area.equals(agent.getArea());
+		}).count();
 	}
 
-	
+
 	/* #3
 	 * getAgentsInAreaThatSpeakLanguage() -- Return a list of agents from a given area, that speak a certain language.
 	 * @param filePath -- Path to file being read in.
@@ -132,11 +135,13 @@ public class CodingCompCsvUtil {
 	 * @return -- The number of agents in a given area
 	 */
 	public List<Agent> getAgentsInAreaThatSpeakLanguage(String filePath, String area, String language) {
-		// TODO this
-		return null;
+		return readCsvFile(filePath, Agent.class).stream().filter(agent -> {
+			// Only include agents with the correct area and language.
+			return area.equals(agent.getArea()) && language.equals(agent.getLanguage());
+		}).collect(Collectors.toList());
 	}
-	
-	
+
+
 	/* #4
 	 * countCustomersFromAreaThatUseAgent() -- Return the number of individuals from an area that use a certain agent.
 	 * @param filePath -- Path to file being read in.
@@ -146,11 +151,22 @@ public class CodingCompCsvUtil {
 	 * @return -- The number of customers that use a certain agent in a given area.
 	 */
 	public short countCustomersFromAreaThatUseAgent(Map<String,String> csvFilePaths, String customerArea, String agentFirstName, String agentLastName) {
-		// TODO this
-		return 0;
+		// First, we find the correct agent.
+		List<Agent> candidateAgents = readCsvFile(csvFilePaths.get("agentList"), Agent.class).stream().filter(agent -> {
+			return agentFirstName.equals(agent.getFirstName()) && agentLastName.equals(agent.getLastName());
+		}).collect(Collectors.toList());
+		if (candidateAgents.size() != 1) {
+			throw new IllegalArgumentException("Multiple agents with a matching name");
+		}
+		Agent agent = candidateAgents.get(0);
+
+		// Then, we find the customers that use this agent in the specified area.
+		return (short) readCsvFile(csvFilePaths.get("customerList"), Customer.class).stream().filter(customer -> {
+			return customer.getAgentId() == agent.getAgentId() && customerArea.equals(customer.getArea());
+		}).count();
 	}
 
-	
+
 	/* #5
 	 * getCustomersRetainedForYearsByPlcyCostAsc() -- Return a list of customers retained for a given number of years, in ascending order of their policy cost.
 	 * @param filePath -- Path to file being read in.
@@ -162,7 +178,7 @@ public class CodingCompCsvUtil {
 		return null;
 	}
 
-	
+
 	/* #6
 	 * getLeadsForInsurance() -- Return a list of individuals who’ve made an inquiry for a policy but have not signed up.
 	 * *HINT* -- Look for customers that currently have no policies with the insurance company.
@@ -176,7 +192,7 @@ public class CodingCompCsvUtil {
 
 
 	/* #7
-	 * getVendorsWithGivenRatingThatAreInScope() -- Return a list of vendors within an area and include options to narrow it down by: 
+	 * getVendorsWithGivenRatingThatAreInScope() -- Return a list of vendors within an area and include options to narrow it down by:
 			a.	Vendor rating
 			b.	Whether that vendor is in scope of the insurance (if inScope == false, return all vendors in OR out of scope, if inScope == true, return ONLY vendors in scope)
 	 * @param filePath -- Path to file being read in.
@@ -203,12 +219,12 @@ public class CodingCompCsvUtil {
 	public List<Customer> getUndisclosedDrivers(String filePath, int vehiclesInsured, int dependents) {
 		// TODO this
 		return null;
-	}	
+	}
 
 
 	/* #9
-	 * getAgentIdGivenRank() -- Return the agent with the given rank based on average customer satisfaction rating. 
-	 * *HINT* -- Rating is calculated by taking all the agent rating by customers (1-5 scale) and dividing by the total number 
+	 * getAgentIdGivenRank() -- Return the agent with the given rank based on average customer satisfaction rating.
+	 * *HINT* -- Rating is calculated by taking all the agent rating by customers (1-5 scale) and dividing by the total number
 	 * of reviews for the agent.
 	 * @param filePath -- Path to file being read in.
 	 * @param agentRank -- The rank of the agent being requested.
@@ -217,11 +233,11 @@ public class CodingCompCsvUtil {
 	public int getAgentIdGivenRank(String filePath, int agentRank) {
 		// TODO this
 		return 0;
-	}	
+	}
 
-	
+
 	/* #10
-	 * getCustomersWithClaims() -- Return a list of customers who’ve filed a claim within the last <numberOfMonths> (inclusive). 
+	 * getCustomersWithClaims() -- Return a list of customers who’ve filed a claim within the last <numberOfMonths> (inclusive).
 	 * @param filePath -- Path to file being read in.
 	 * @param monthsOpen -- Number of months a policy has been open.
 	 * @return -- List of customers who’ve filed a claim within the last <numberOfMonths>.
@@ -229,6 +245,6 @@ public class CodingCompCsvUtil {
 	public List<Customer> getCustomersWithClaims(Map<String,String> csvFilePaths, short monthsOpen) {
 		// TODO this
 		return null;
-	}	
+	}
 
 }
